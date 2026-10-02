@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>금융상품 상담 | 하나</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f8f7;
+            font-family:
+                Arial,
+                "Noto Sans KR",
+                sans-serif;
+            color: #222;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .header {
+            height: 76px;
+            background: white;
+            border-bottom: 1px solid #e2ece9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 45px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .logo {
+            width: 130px;
+        }
+
+        .chat-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .back {
+            color: #008f7b;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .main {
+            height: calc(100vh - 76px);
+            display: flex;
+            justify-content: center;
+        }
+
+        .chat-wrapper {
+            width: 850px;
+            max-width: calc(100% - 30px);
+            height: 100%;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid #e5eeec;
+            border-right: 1px solid #e5eeec;
+        }
+
+        .intro {
+            text-align: center;
+            padding: 35px 25px 20px;
+        }
+
+        .bot-image {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            object-fit: contain;
+        }
+
+        .intro-title {
+            font-size: 23px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .intro-subtitle {
+            color: #777;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 35px 25px;
+        }
+
+        .message-row {
+            display: flex;
+            margin-bottom: 22px;
+        }
+
+        .message-row.user {
+            justify-content: flex-end;
+        }
+
+        .message-row.bot {
+            justify-content: flex-start;
+        }
+
+        .bubble {
+            max-width: 72%;
+            padding: 14px 17px;
+            line-height: 1.65;
+            font-size: 14px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            border-radius: 17px;
+        }
+
+        .bot .bubble {
+            background: #eef8f6;
+            color: #333;
+            border-top-left-radius: 5px;
+        }
+
+        .user .bubble {
+            background: #00a88f;
+            color: white;
+            border-top-right-radius: 5px;
+        }
+
+        .typing {
+            display: none;
+            margin-bottom: 20px;
+        }
+
+        .typing .bubble {
+            color: #888;
+            background: #f2f4f4;
+        }
+
+        .input-area {
+            padding: 16px 22px 22px;
+            background: white;
+            border-top: 1px solid #e6eeec;
+        }
+
+        .input-box {
+            background: #f7faf9;
+            border: 1px solid #dce8e5;
+            border-radius: 18px;
+            padding: 9px 9px 9px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        textarea {
+            border: none;
+            outline: none;
+            resize: none;
+            background: transparent;
+            font-size: 14px;
+            font-family: inherit;
+            flex: 1;
+            min-height: 42px;
+            max-height: 110px;
+            padding-top: 10px;
+        }
+
+        button {
+            width: 48px;
+            height: 48px;
+            border: none;
+            border-radius: 50%;
+            background: #00a88f;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #008f7b;
+        }
+
+        button:disabled {
+            background: #b7ccc8;
+            cursor: default;
+        }
+
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+            justify-content: center;
+        }
+
+        .suggestion {
+            border: 1px solid #d6e5e1;
+            background: white;
+            color: #555;
+            border-radius: 20px;
+            padding: 8px 13px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .suggestion:hover {
+            border-color: #00a88f;
+            color: #008f7b;
+        }
+
+        @media (max-width: 700px) {
+
+            .header {
+                padding: 0 20px;
+            }
+
+            .chat-title {
+                display: none;
+            }
+
+            .messages {
+                padding-left: 18px;
+                padding-right: 18px;
+            }
+
+            .bubble {
+                max-width: 85%;
+            }
+
+            .intro {
+                padding-top: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="header-left">
+
+        <img
+            class="logo"
+            src="/static/logo.png"
+            alt="Hana"
+        >
+
+        <div class="chat-title">
+            금융상품 상담
+        </div>
+
+    </div>
+
+    <a
+        class="back"
+        href="/main"
+    >
+        상품 추천으로 돌아가기
+    </a>
+
+</header>
+
+
+<div class="main">
+
+    <div class="chat-wrapper">
+
+        <div class="intro">
+
+            <img
+                class="bot-image"
+                src="/static/chatbot.png"
+                alt="챗봇"
+            >
+
+            <div class="intro-title">
+                안녕하세요, {{ user["name"] }}님
+            </div>
+
+            <div class="intro-subtitle">
+                금융상품에 대해 궁금한 점을 편하게 물어보세요.<br>
+                현재 고객님의 정보에 맞춰 상품을 안내해드릴게요.
+            </div>
+
+        </div>
+
+
+        <div
+            class="messages"
+            id="messages"
+        >
+
+            <div class="message-row bot">
+
+                <div class="bubble">
+                    안녕하세요. 금융상품 상담 챗봇입니다.
+
+예금 금리, 가입기간, 가입금액, 추천상품 비교 등에 대해 궁금한 점을 말씀해주세요.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="typing"
+            id="typing"
+        >
+
+            <div class="bubble">
+                답변을 작성하고 있습니다...
+            </div>
+
+        </div>
+
+
+        <div class="input-area">
+
+            <div class="input-box">
+
+                <textarea
+                    id="message"
+                    placeholder="금융상품에 대해 물어보세요."
+                    rows="1"
+                ></textarea>
+
+                <button
+                    id="sendButton"
+                    onclick="sendMessage()"
+                >
+                    ↑
+                </button>
+
+            </div>
+
+
+            <div class="suggestions">
+
+                <button
+                    class="suggestion"
+                    type="button"
+                    onclick="suggest('저에게 맞는 예금상품 3개를 추천해주세요.')"
+                >
+                    맞춤상품 추천
+                </button>
+
+                <button
+                    class="suggestion"
+                    type="button"
+                    onclick="suggest('금리가 높은 예금상품을 알려주세요.')"
+                >
+                    높은 금리 상품
+                </button>
+
+                <button
+                    class="suggestion"
+                    type="button"
+                    onclick="suggest('가입금액이 부담되지 않는 상품을 알려주세요.')"
+                >
+                    가입금액 비교
+                </button>
+
+                <button
+                    class="suggestion"
+                    type="button"
+                    onclick="suggest('추천상품 3개의 차이점을 비교해주세요.')"
+                >
+                    상품 비교
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    const input = document.getElementById("message");
+    const messages = document.getElementById("messages");
+    const typing = document.getElementById("typing");
+    const sendButton = document.getElementById("sendButton");
+
+
+    input.addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter" && !event.shiftKey) {
+
+            event.preventDefault();
+
+            sendMessage();
+        }
+
+    });
+
+
+    function addMessage(text, type) {
+
+        const row = document.createElement("div");
+
+        row.className =
+            "message-row " + type;
+
+        const bubble = document.createElement("div");
+
+        bubble.className = "bubble";
+
+        bubble.textContent = text;
+
+        row.appendChild(bubble);
+
+        messages.appendChild(row);
+
+        messages.scrollTop =
+            messages.scrollHeight;
+    }
+
+
+    function suggest(text) {
+
+        input.value = text;
+
+        sendMessage();
+    }
+
+
+    async function sendMessage() {
+
+        const message =
+            input.value.trim();
+
+        if (!message) {
+            return;
+        }
+
+        addMessage(message, "user");
+
+        input.value = "";
+
+        sendButton.disabled = true;
+
+        typing.style.display = "flex";
+
+        messages.scrollTop =
+            messages.scrollHeight;
+
+        try {
+
+            const response = await fetch(
+                "/api/chat",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        message: message
+                    })
+                }
+            );
+
+            const data =
+                await response.json();
+
+            typing.style.display = "none";
+
+            addMessage(
+                data.answer ||
+                "답변을 불러오지 못했습니다.",
+                "bot"
+            );
+
+        } catch (error) {
+
+            typing.style.display = "none";
+
+            addMessage(
+                "서버와 연결하지 못했습니다. 잠시 후 다시 시도해주세요.",
+                "bot"
+            );
+
+        } finally {
+
+            sendButton.disabled = false;
+
+            input.focus();
+        }
+    }
+
+</script>
+
+</body>
+</html>

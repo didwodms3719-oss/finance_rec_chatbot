@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>하나 금융상품 추천</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f8f7;
+            color: #222;
+        }
+
+        /* =========================
+           상단
+        ========================= */
+
+        .header {
+            height: 75px;
+            background: white;
+            border-bottom: 1px solid #eeeeee;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 60px;
+        }
+
+        .logo {
+            width: 130px;
+            max-height: 55px;
+            object-fit: contain;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .welcome {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .logout {
+            text-decoration: none;
+            color: #009b77;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* =========================
+           메인
+        ========================= */
+
+        .container {
+            width: 1100px;
+            max-width: 90%;
+            margin: 50px auto;
+        }
+
+        .title {
+            margin-bottom: 10px;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            color: #777;
+            margin-bottom: 35px;
+        }
+
+        /* =========================
+           회원정보
+        ========================= */
+
+        .profile-box {
+            background: white;
+            border-radius: 18px;
+            padding: 25px 30px;
+            margin-bottom: 35px;
+
+            display: flex;
+            align-items: center;
+
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .profile-image {
+            width: 70px;
+            height: 70px;
+
+            border-radius: 50%;
+            object-fit: cover;
+
+            margin-right: 20px;
+        }
+
+        .profile-default {
+            width: 70px;
+            height: 70px;
+
+            border-radius: 50%;
+
+            background: #009b77;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 27px;
+            font-weight: bold;
+
+            margin-right: 20px;
+        }
+
+        .profile-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        .profile-info {
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* =========================
+           상품
+        ========================= */
+
+        .section-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .products {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+        }
+
+        .product-card {
+            background: white;
+
+            border-radius: 18px;
+
+            padding: 28px;
+
+            min-height: 320px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.05);
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,0.09);
+        }
+
+        .bank {
+            color: #009b77;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .product-name {
+            font-size: 20px;
+            font-weight: bold;
+
+            margin-bottom: 20px;
+
+            min-height: 48px;
+        }
+
+        .rate-box {
+            background: #f1faf7;
+
+            border-radius: 12px;
+
+            padding: 15px;
+
+            margin-bottom: 20px;
+        }
+
+        .rate-title {
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        .rate {
+            font-size: 25px;
+            font-weight: bold;
+            color: #009b77;
+        }
+
+        .info {
+            font-size: 13px;
+            color: #666;
+
+            line-height: 1.7;
+        }
+
+        .detail-button {
+            display: block;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            margin-top: 20px;
+
+            padding: 12px;
+
+            border-radius: 9px;
+
+            background: #009b77;
+            color: white;
+
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .detail-button:hover {
+            background: #007f63;
+        }
+
+        /* =========================
+           상품 없음
+        ========================= */
+
+        .no-product {
+            background: white;
+
+            border-radius: 18px;
+
+            padding: 50px;
+
+            text-align: center;
+
+            color: #777;
+        }
+
+        /* =========================
+           챗봇
+        ========================= */
+
+        .chatbot-button {
+            position: fixed;
+
+            right: 30px;
+            bottom: 30px;
+
+            width: 70px;
+            height: 70px;
+
+            border-radius: 50%;
+
+            background: white;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.18);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.2s;
+        }
+
+        .chatbot-button:hover {
+            transform: scale(1.08);
+        }
+
+        .chatbot-button img {
+            width: 52px;
+            height: 52px;
+
+            object-fit: contain;
+        }
+
+        /* =========================
+           모바일
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .header {
+                padding: 0 20px;
+            }
+
+            .container {
+                max-width: 92%;
+            }
+
+            .products {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome {
+                display: none;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     상단
+========================= -->
+
+<div class="header">
+
+    <a href="/main">
+
+        <img
+            src="/static/logo.png"
+            class="logo"
+            alt="Hana"
+        >
+
+    </a>
+
+
+    <div class="header-right">
+
+        <span class="welcome">
+
+            {{ user["name"] }}님 환영합니다.
+
+        </span>
+
+
+        <a
+            href="/logout"
+            class="logout"
+        >
+            로그아웃
+        </a>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================
+     메인
+========================= -->
+
+<div class="container">
+
+
+    <div class="title">
+
+        {{ user["name"] }}님을 위한
+        금융상품 추천
+
+    </div>
+
+
+    <div class="subtitle">
+
+        나이, 투자성향, 직업, 소득을 바탕으로
+        금융상품을 추천해드립니다.
+
+    </div>
+
+
+
+    <!-- =========================
+         회원정보
+    ========================= -->
+
+    <div class="profile-box">
+
+
+        {% if user["profile_photo"] %}
+
+        <img
+            src="{{ user['profile_photo'] }}"
+            class="profile-image"
+            alt="프로필"
+        >
+
+        {% else %}
+
+        <div class="profile-default">
+
+            {{ user["name"][0] }}
+
+        </div>
+
+        {% endif %}
+
+
+
+        <div>
+
+            <div class="profile-name">
+
+                {{ user["name"] }}님
+
+            </div>
+
+
+            <div class="profile-info">
+
+                나이 {{ user["age"] }}세
+
+                {% if user["gender"] %}
+                · {{ user["gender"] }}
+                {% endif %}
+
+                {% if user["investment_type"] %}
+                · 투자성향 {{ user["investment_type"] }}
+                {% endif %}
+
+                {% if user["job"] %}
+                · {{ user["job"] }}
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =========================
+         추천상품
+    ========================= -->
+
+    <div class="section-title">
+
+        추천 금융상품
+
+    </div>
+
+
+    {% if products %}
+
+
+    <div class="products">
+
+
+        {% for product in products %}
+
+
+        <div class="product-card">
+
+
+            <div class="bank">
+
+                {{ product["금융사"] }}
+
+            </div>
+
+
+            <div class="product-name">
+
+                {{ product["상품명"] }}
+
+            </div>
+
+
+
+            <div class="rate-box">
+
+                <div class="rate-title">
+
+                    최고금리
+
+                </div>
+
+
+                <div class="rate">
+
+                    {{ product["최고금리"] }}
+
+                </div>
+
+            </div>
+
+
+
+            <div class="info">
+
+
+                {% if product["기본금리"] %}
+
+                기본금리 :
+                {{ product["기본금리"] }}
+
+                <br>
+
+                {% endif %}
+
+
+
+                {% if product["가입기간"] %}
+
+                가입기간 :
+                {{ product["가입기간"] }}
+
+                <br>
+
+                {% endif %}
+
+
+
+                {% if product["가입금액"] %}
+
+                가입금액 :
+                {{ product["가입금액"] }}
+
+                <br>
+
+                {% endif %}
+
+
+
+                {% if product["가입대상"] %}
+
+                가입대상 :
+                {{ product["가입대상"] }}
+
+                {% endif %}
+
+
+            </div>
+
+
+
+            {% if product["상세URL"] %}
+
+            <a
+                href="{{ product['상세URL'] }}"
+                target="_blank"
+                class="detail-button"
+            >
+                상품 자세히 보기
+            </a>
+
+            {% endif %}
+
+
+        </div>
+
+
+        {% endfor %}
+
+
+    </div>
+
+
+    {% else %}
+
+
+    <div class="no-product">
+
+        현재 추천할 금융상품을 찾을 수 없습니다.
+
+    </div>
+
+
+    {% endif %}
+
+
+</div>
+
+
+
+<!-- =========================
+     챗봇 버튼
+========================= -->
+
+<a
+    href="/chatbot"
+    class="chatbot-button"
+>
+
+    <img
+        src="/static/chatbot.png"
+        alt="챗봇"
+    >
+
+</a>
+
+
+</body>
+
+</html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>회원가입 | 하나 금융상품 추천</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f5faf9;
+            font-family:
+                Arial,
+                "Noto Sans KR",
+                sans-serif;
+            color: #222;
+        }
+
+        .header {
+            height: 78px;
+            background: white;
+            border-bottom: 1px solid #e5eeee;
+            display: flex;
+            align-items: center;
+            padding: 0 50px;
+        }
+
+        .header img {
+            width: 135px;
+        }
+
+        .container {
+            width: 760px;
+            margin: 40px auto 70px;
+        }
+
+        .title {
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 8px 30px rgba(0, 90, 80, 0.08);
+        }
+
+        .section-title {
+            color: #008f7b;
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px 20px;
+        }
+
+        .full {
+            grid-column: span 2;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            height: 48px;
+            border: 1px solid #d9e5e3;
+            border-radius: 10px;
+            padding: 0 13px;
+            font-size: 14px;
+            background: white;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #00a88f;
+        }
+
+        input[type="file"] {
+            padding: 13px;
+        }
+
+        .profile-help {
+            font-size: 12px;
+            color: #888;
+            margin-top: 7px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        button,
+        .cancel {
+            flex: 1;
+            height: 52px;
+            border-radius: 11px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 700;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        button {
+            border: none;
+            background: #00a88f;
+            color: white;
+        }
+
+        button:hover {
+            background: #008f7b;
+        }
+
+        .cancel {
+            border: 1px solid #d7e2e0;
+            background: white;
+            color: #555;
+        }
+
+        .error {
+            background: #fff1f1;
+            color: #d64141;
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 800px) {
+            .container {
+                width: calc(100% - 30px);
+            }
+
+            .header {
+                padding: 0 20px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="header">
+    <img src="/static/logo.png" alt="Hana">
+</header>
+
+<div class="container">
+
+    <div class="title">
+        회원가입
+    </div>
+
+    <div class="subtitle">
+        나에게 맞는 금융상품을 추천받기 위한 정보를 입력해주세요.
+    </div>
+
+    {% if error %}
+    <div class="error">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <div class="card">
+
+        <div class="section-title">
+            기본정보
+        </div>
+
+        <form
+            action="/signup"
+            method="post"
+            enctype="multipart/form-data"
+        >
+
+            <div class="grid">
+
+                <div>
+                    <label>아이디</label>
+                    <input
+                        type="text"
+                        name="user_id"
+                        placeholder="아이디"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label>비밀번호</label>
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="비밀번호"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label>이름</label>
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="이름"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label>이메일</label>
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="example@email.com"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label>나이</label>
+                    <input
+                        type="number"
+                        name="age"
+                        min="1"
+                        max="120"
+                        placeholder="나이"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label>성별</label>
+                    <select name="gender" required>
+                        <option value="">선택하세요</option>
+                        <option value="남성">남성</option>
+                        <option value="여성">여성</option>
+                        <option value="기타">기타</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>투자성향</label>
+                    <select
+                        name="investment_type"
+                        required
+                    >
+                        <option value="">선택하세요</option>
+                        <option value="안정형">안정형</option>
+                        <option value="안정추구형">안정추구형</option>
+                        <option value="중립형">중립형</option>
+                        <option value="성장추구형">성장추구형</option>
+                        <option value="적극형">적극형</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>직업</label>
+                    <select name="job" required>
+                        <option value="">선택하세요</option>
+                        <option value="직장인">직장인</option>
+                        <option value="공무원">공무원</option>
+                        <option value="자영업자">자영업자</option>
+                        <option value="학생">학생</option>
+                        <option value="주부">주부</option>
+                        <option value="프리랜서">프리랜서</option>
+                        <option value="퇴직자">퇴직자</option>
+                        <option value="기타">기타</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>연소득(만원)</label>
+                    <input
+                        type="number"
+                        name="income"
+                        min="0"
+                        placeholder="예: 4000"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label>프로필사진</label>
+                    <input
+                        type="file"
+                        name="profile_photo"
+                        accept="image/*"
+                    >
+                    <div class="profile-help">
+                        JPG, PNG, GIF, WEBP 파일을 사용할 수 있습니다.
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="buttons">
+
+                <a
+                    href="/login"
+                    class="cancel"
+                >
+                    취소
+                </a>
+
+                <button type="submit">
+                    회원가입
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>
